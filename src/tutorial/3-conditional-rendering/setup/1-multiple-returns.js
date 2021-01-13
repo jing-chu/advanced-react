@@ -1,7 +1,44 @@
 import React, { useState, useEffect } from 'react';
 const url = 'https://api.github.com/users/QuincyLarson';
 const MultipleReturns = () => {
-  return <h2>multiple returns</h2>;
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
+  const [user, setUser] = useState('default user');
+
+  useEffect(() => {
+    fetch(url)
+      .then((resp) => {
+        if (resp.status >= 200 && resp.status <= 299) {
+          return resp.json()    // succesful fetch return resp.json() 
+        } else {
+          setIsLoading(false);
+          setIsError(true);
+          throw new Error(resp.statusText);   // failure fetch throw new Error
+        }
+      })
+      .then((user) => {
+        setIsLoading(false);
+        console.log(user);
+        setUser(user);
+      })
+      .catch((err) => { console.log(err) })
+  }, [])
+
+  if (isLoading) {        // conditional rendering with multiple returns
+    return <>
+      <h2>Loading...</h2>
+    </>;
+  } else if (isError) {
+    return <>
+      <h2>Error...</h2>
+    </>
+  } else {
+    const { login } = user
+    return <>
+      <h2>{login}</h2>
+    </>
+  }
+
 };
 
 export default MultipleReturns;

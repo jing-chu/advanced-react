@@ -1,7 +1,22 @@
 import React, { useState } from 'react';
 
 const UseStateObject = () => {
-  return <h2>useState object example</h2>;
+  const [person, setPerson] = useState({
+    name: 'Peter',
+    age: '43',
+    message: 'JAVA programmer'
+  })
+
+  const changeMessage = () => {
+    setPerson({ ...person, message: 'JavaScript programmer' })   //Object - spread operation
+  }
+
+  return <>
+    <h3>{person.name}</h3>
+    <h3>{person.age}</h3>
+    <h3>{person.message}</h3>
+    <button className='btn' onClick={changeMessage}>Change Message</button>
+  </>;
 };
 
 export default UseStateObject;
